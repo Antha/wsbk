@@ -1,0 +1,10 @@
+version: "3.8"
+services:
+  react:
+    container_name: dashboard_paragames
+    volumes:
+       - .:/var/www/html
+    build: .
+    command: sh -c "npm run build && npm run start:prod"
+    ports:
+      - 9009:3000

@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2" xmlns:gx="http://www.google.com/kml/ext/2.2" xmlns:kml="http://www.opengis.net/kml/2.2" xmlns:atom="http://www.w3.org/2005/Atom">
+<Document>
+	<name>POLIGON_POI.kml</name>
+	<Style id="sh_ylw-pushpin">
+		<IconStyle>
+			<scale>1.3</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+			</Icon>
+			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<LineStyle>
+			<color>66ffffff</color>
+		</LineStyle>
+		<PolyStyle>
+			<color>b3ffffff</color>
+		</PolyStyle>
+	</Style>
+	<Style id="sn_ylw-pushpin">
+		<IconStyle>
+			<scale>1.1</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
+			</Icon>
+			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<LineStyle>
+			<color>66ffffff</color>
+		</LineStyle>
+		<PolyStyle>
+			<color>b3ffffff</color>
+		</PolyStyle>
+	</Style>
+	<StyleMap id="msn_ylw-pushpin">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Folder>
+		<name>POLIGON_POI</name>
+		<open>1</open>
+		<Placemark>
+			<name>Airport</name>
+			<styleUrl>#msn_ylw-pushpin</styleUrl>
+			<Polygon>
+				<tessellate>1</tessellate>
+				<outerBoundaryIs>
+					<LinearRing>
+						<coordinates>
+							115.1608205376231,-8.740636955438424,0 115.1614840647744,-8.746238190867821,0 115.1689210482289,-8.746113594056125,0 115.1683190820991,-8.740365564646639,0 115.1608205376231,-8.740636955438424,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+		<Placemark>
+			<name>Wisata Legian</name>
+			<styleUrl>#msn_ylw-pushpin</styleUrl>
+			<Polygon>
+				<tessellate>1</tessellate>
+				<outerBoundaryIs>
+					<LinearRing>
+						<coordinates>
+							115.1647378281964,-8.708106908415191,0 115.1663214084469,-8.708148597811164,0 115.1710507344,-8.706050271244724,0 115.171201331601,-8.700176270620943,0 115.1619226166911,-8.700186878937322,0 115.1647378281964,-8.708106908415191,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+		<Placemark>
+			<name>Wisata Kuta</name>
+			<styleUrl>#msn_ylw-pushpin</styleUrl>
+			<Polygon>
+				<tessellate>1</tessellate>
+				<outerBoundaryIs>
+					<LinearRing>
+						<coordinates>
+							115.168909894281,-8.724263416012276,0 115.1711725563175,-8.724052270452058,0 115.1723323070332,-8.723934823157609,0 115.1734054613642,-8.723269619416728,0 115.1738780801828,-8.721028568835692,0 115.1734535275423,-8.718417218405643,0 115.1732035290282,-8.716446466833707,0 115.1723693410408,-8.713608265000161,0 115.1701458059912,-8.709905158196163,0 115.164975867486,-8.710192629443926,0 115.168909894281,-8.724263416012276,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+		<Placemark>
+			<name>Wisata Mangrove</name>
+			<styleUrl>#msn_ylw-pushpin</styleUrl>
+			<Polygon>
+				<tessellate>1</tessellate>
+				<outerBoundaryIs>
+					<LinearRing>
+						<coordinates>
+							115.1912715319262,-8.721181061627183,0 115.1923742351693,-8.726184733568511,0 115.1968475236,-8.725107588016032,0 115.1981657408533,-8.719671423154674,0 115.1953436632384,-8.717993623161455,0 115.1912715319262,-8.721181061627183,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+		<Placemark>
+			<name>Wisata Kura-kura</name>
+			<styleUrl>#msn_ylw-pushpin</styleUrl>
+			<Polygon>
+				<tessellate>1</tessellate>
+				<outerBoundaryIs>
+					<LinearRing>
+						<coordinates>
+							115.2356164567557,-8.723683570383374,0 115.237555564349,-8.727076480661466,0 115.241412269306,-8.725144707045949,0 115.2387921820864,-8.722097505664554,0 115.2356164567557,-8.723683570383374,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+		<Placemark>
+			<name>Wisata GWK</name>
+			<styleUrl>#msn_ylw-pushpin</styleUrl>
+			<Polygon>
+				<tessellate>1</tessellate>
+				<outerBoundaryIs>
+					<LinearRing>
+						<coordinates>
+							115.1578663610454,-8.80998751165632,0 115.1625087739201,-8.814392036060513,0 115.1708035243706,-8.815196666351868,0 115.1738457217899,-8.808491103336053,0 115.1688109398421,-8.802716285428383,0 115.1614866215762,-8.801663468190661,0 115.1573547149318,-8.804702455716662,0 115.1578663610454,-8.80998751165632,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+		<Placemark>
+			<name>Wisata Jimbaran</name>
+			<styleUrl>#msn_ylw-pushpin</styleUrl>
+			<Polygon>
+				<tessellate>1</tessellate>
+				<outerBoundaryIs>
+					<LinearRing>
+						<coordinates>
+							115.1559715141182,-8.780249474381165,0 115.1564301566469,-8.787423492512529,0 115.1654158513774,-8.787531374667187,0 115.1688400607194,-8.78098707664906,0 115.1745492218271,-8.777897501171628,0 115.1756302809438,-8.770064292383795,0 115.1721060658332,-8.765249929481026,0 115.1713371452331,-8.762131623095764,0 115.1676410573215,-8.762193162836267,0 115.1559715141182,-8.780249474381165,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+		<Placemark>
+			<name>ITDC Main Venue</name>
+			<styleUrl>#msn_ylw-pushpin</styleUrl>
+			<Polygon>
+				<tessellate>1</tessellate>
+				<outerBoundaryIs>
+					<LinearRing>
+						<coordinates>
+							115.2260797051543,-8.791984814917805,0 115.2235882125715,-8.797086880664448,0 115.2247732939254,-8.804330608042559,0 115.232923671934,-8.802858792754712,0 115.2384221988305,-8.799655676775123,0 115.235151071545,-8.793143514162709,0 115.2331913419463,-8.790442092134526,0 115.2260797051543,-8.791984814917805,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+		<Placemark>
+			<name>Hospitality Nusa Dua</name>
+			<styleUrl>#msn_ylw-pushpin</styleUrl>
+			<Polygon>
+				<tessellate>1</tessellate>
+				<outerBoundaryIs>
+					<LinearRing>
+						<coordinates>
+							115.2197569541373,-8.791847254441524,0 115.2136563755769,-8.800900473322777,0 115.2167028474463,-8.803843817466626,0 115.2202533865815,-8.810184589939968,0 115.2144232421558,-8.813754172450016,0 115.2096949865017,-8.829865124119319,0 115.2097821050186,-8.835392038582203,0 115.2183627796952,-8.830091580811091,0 115.2232135608385,-8.825263800939439,0 115.2264572123189,-8.818728032481348,0 115.2326273450424,-8.81235318155904,0 115.2343328367717,-8.80372139174189,0 115.2307047398002,-8.804219973729294,0 115.227243218729,-8.805224999259416,0 115.2238473903358,-8.804834170981794,0 115.2223820817248,-8.800006056740884,0 115.2235611139822,-8.794060640921373,0 115.2263890447138,-8.790192047990297,0 115.2312814752405,-8.789518455507455,0 115.2321696987046,-8.786078254698866,0 115.2278245116034,-8.778637269398233,0 115.2262968946874,-8.768772975807094,0 115.2263517829876,-8.760192247239834,0 115.2247894587026,-8.75198126769269,0 115.2206108119924,-8.750292471700714,0 115.2173547111921,-8.750293544641538,0 115.2133897106718,-8.756415196403191,0 115.2144957205773,-8.770042690313439,0 115.2197569541373,-8.791847254441524,0 
+						</coordinates>
+					</LinearRing>
+				</outerBoundaryIs>
+			</Polygon>
+		</Placemark>
+	</Folder>
+</Document>
+</kml>
