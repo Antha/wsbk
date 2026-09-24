@@ -1,4 +1,4 @@
-var httpProxy = require('http-proxy');
+/*var httpProxy = require('http-proxy');
 let fs = require('fs');
 
 httpProxy.createServer({
@@ -11,4 +11,4 @@ httpProxy.createServer({
       cert: fs.readFileSync('cert/server.cert', 'utf8')
     }
   }).listen(9008);
-console.log("Proxy Server is running");
+console.log("Proxy Server is running");*/

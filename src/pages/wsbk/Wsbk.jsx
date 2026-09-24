@@ -884,7 +884,7 @@ const Wsbk = () => {
 
                         <div>
                           <div style={{fontSize: '13px', marginTop: '0px'}}>Develop By:</div>
-                          <div style={{fontSize: '12px', color: '#bbb', fontStyle: 'italic', margin: '0px 0px 0px', paddingBottom: "3px"}}>NPAC A3</div>
+                          <div style={{fontSize: '12px', color: '#bbb', fontStyle: 'italic', margin: '0px 0px 0px', paddingBottom: "3px"}}>NPAC</div>
                         </div>
                       </Col>
                       <Col span={9} style={{display: 'flex', justifyContent: 'end', padding: '0px 8px', alignItems: "center"}}>

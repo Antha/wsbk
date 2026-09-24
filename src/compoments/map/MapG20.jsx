@@ -235,7 +235,7 @@ if(dataMapArea.length > 0){
         // googleMapsApiKey="AIzaSyAnJyPunrxDLtm7Jz2Bcg-2XRdO1vvhVMo"
         // googleMapsApiKey="AIzaSyDYp1te-bQEhWE9P9yehRE3biB7LpSEh4U"
         
-        googleMapsApiKey="AIzaSyAdfipYKTyWEiJXhGSRos_HxVAaEcUQyuw"
+        googleMapsApiKey="AIzaSyCIBITLvj_8kao6e1r7ZyH1UYQm-1JMwoU"
       >
         <GoogleMap
           mapContainerStyle={containerStyle}

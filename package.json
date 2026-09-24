@@ -29,7 +29,7 @@
     "web-vitals": "^2.1.2"
   },
   "scripts": {
-    "start": "set PORT=9008 && react-app-rewired start",
+    "start": "set HTTPS=true&&set SSL_CRT_FILE=cert/server.pem&&set SSL_KEY_FILE=cert/server.key&&set PORT=3100&&react-app-rewired start",
     "start:prod": "serve -s build",
     "build": "react-scripts build",
     "test": "react-scripts test",

@@ -6,9 +6,4 @@ module.exports = {
     user                : 'hwi_event',
     password            : 'Evt.2021',
     database            : 'event_royalwed'
-    
-    // host                : 'localhost',
-    // user                : 'root',
-    // password            : '',
-    // database            : 'api'
 };
