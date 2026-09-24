@@ -2,7 +2,7 @@ const router = require('express').Router();
 const { poi,payloadtraffic, vlr,engineer,summary, poibod } = require('../controllers');
 
 // GET localhost:8080/karyawan => Ambil data semua karyawan
-const root = '/wsbk-2023/api';
+const root = '/motogp-2026/api';
 
 // get all poi
 router.get(root+'/poi', poi.getPoi);

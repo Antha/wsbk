@@ -5,6 +5,16 @@ import ModalDetailArea from '../modal/ModalDetailArea';
 import ModalDetailPoi from '../modal/ModalDetailPoi';
 import ModalDetailEngineer from '../modal/ModalDetailTower';
 
+const getBaseURL = () => {
+  const hostname = window.location.hostname; // ambil host dari browser
+
+  if (hostname === "localhost" || hostname === "127.0.0.1") {
+    return "https://localhost:8479/motogp-2026";
+  } else {
+    return "https://10.65.103.51:8479/motogp-2026";
+  }
+};
+
 const MyComponent= ({dataMapIcon, dataMapArea, dataMapPoi, uri, dataMapPeople}) => {
   const [activeMarker, setActiveMarker] = useState(null);
   const [markerDataArea, setMarkerDataArea] = useState(dataMapArea);
@@ -140,7 +150,7 @@ function handleZoomChanged(){
   setZoomChange(this.getZoom());
 }
 const handleShowModalInfoArea = async(city, title, lat, long, status) =>{
-  await axios('https://10.65.103.51:8479/wsbk-2023/api/poi/map/first/'+city+"/"+status,{
+  await axios(`${getBaseURL()}/api/poi/map/first/`+city+`/`+status,{
     method: 'GET',
     headers: {
         'key': `bf931496409d570ca09cc0d30446b325`,
@@ -174,7 +184,7 @@ const handleCloseModalInfoArea = (marker, center) => {
 }
 
 const handleShowModalInfoPoi = async(siteid, dataMapPoi, title, lat, long, status) =>{
-  await axios('https://10.65.103.51:8479/wsbk-2023/api/poi/'+siteid+"/"+status,{
+  await axios(`${getBaseURL()}/api/poi/`+siteid+"/"+status,{
     method: 'GET',
     headers: {
         'key': `bf931496409d570ca09cc0d30446b325`,
@@ -244,10 +254,11 @@ if(dataMapArea.length > 0){
           onZoomChanged={handleZoomChanged}
           options={optionsMap}
         >
-          {markerDataArea.map((dataarea) => {
+          {
+            markerDataArea.map((dataarea) => {
             var url = '';
             var status = '';
-            var city = '';
+            var city = 'MATARAM';
 
             if(dataarea.SITE_ID.substr(-3) == '132' ){
               city = 'MANDALIKA';
@@ -258,16 +269,16 @@ if(dataMapArea.length > 0){
             }
 
             if(dataarea.CRITICAL > 0 ){
-              url = '/wsbk-2023/paragames/SITE-CRITICAL.png';
+              url = '/motogp-2026/paragames/SITE-CRITICAL.png';
               status = 'CRITICAL';
             }else if(dataarea.CAPACITY > 0 ){
-              url = '/wsbk-2023/paragames/SITE-CAPACITY.png'
+              url = '/motogp-2026/paragames/SITE-CAPACITY.png'
               status = 'CAPACITY';
             }else if(dataarea.QUALITY > 0 ){
-              url = '/wsbk-2023/paragames/SITE-QUALITY.png'
+              url = '/motogp-2026/paragames/SITE-QUALITY.png'
               status = 'QUALITY';
             }else{
-              url = '/wsbk-2023/paragames/SITE-NORMAL.png'
+              url = '/motogp-2026/paragames/SITE-NORMAL.png'
               status = 'NORMAL';
             }
             return (
@@ -287,8 +298,7 @@ if(dataMapArea.length > 0){
           })}
 
           {markerDataPoi.map((datapoi, index) => {
-            var url = '/wsbk-2023/paragames/SITE-'+datapoi.STATUS+'.png';
-            // console.log(datapoi)
+            var url = '/motogp-2026/paragames/SITE-'+datapoi.STATUS+'.png';
             return (
               <Marker
                 icon={{ url: url, size: {width: iconSize, height: iconSize}, anchor: {x: iconAnchor, y: iconAnchor}, scaledSize: {width: iconSize, height: iconSize}, }}
@@ -306,7 +316,7 @@ if(dataMapArea.length > 0){
           })}
 
           {markerDataEngineer.map((dataengineer) => {
-            var url = '/wsbk-2023//paragames/people.png';
+            var url = '/motogp-2026//paragames/people.png';
             return (
               <Marker
                 icon={{ url: url, size: {width: iconSize2, height: iconSize2}, anchor: {x: iconAnchor2, y: iconAnchor2}, scaledSize: {width: iconSize2, height: iconSize2}, }}

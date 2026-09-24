@@ -46,7 +46,7 @@ module.exports ={
         const agent = new https.Agent({  
             rejectUnauthorized: false
         });
-        const showModalDownloadReport = async() => {await axios('https://10.65.103.51/wsbk-2023/data-summary/get-report-summary.php', {
+        const showModalDownloadReport = async() => {await axios('http://localhost/reportMotgp2026/get-report-summary.php', {
             httpsAgent: agent,
             method: 'GET',
         }).then(result => {

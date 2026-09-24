@@ -11,7 +11,7 @@ import Bot from './pages/paragames/Bot';
 
 export default function App() {
   return (
-    <BrowserRouter  basename='/wsbk-2023'>
+    <BrowserRouter  basename='/motogp-2026'>
     <Routes>
       <Route path="/" element={<Wsbk />} />
       <Route path="paragames/bot" element={<Bot />} />

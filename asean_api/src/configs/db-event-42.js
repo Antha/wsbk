@@ -3,8 +3,8 @@ module.exports = {
     waitForConnections  : true,
     timeout             : 60 * 60 * 1000,
     host                : '10.65.103.42',
-    user                : 'npa',
-    password            : 'NPA.2022#',
+    user                : 'ts_admin',
+    password            : 'Tsx2244!',
     database            : 'reg07'
     
     // host                : 'localhost',

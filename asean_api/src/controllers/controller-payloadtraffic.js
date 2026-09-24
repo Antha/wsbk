@@ -25,13 +25,13 @@ module.exports ={
                 // console.log(results)
                 if(error) throw error;  
                 
-                    let query = `       (SELECT A.TRAFFIC TRAF_BASELINE, A.PAYLOAD PAY_BASELINE, SUM(B.TRAFFIC) TRAF_NOW, 
+                    let query = ` (SELECT A.TRAFFIC TRAF_BASELINE, A.PAYLOAD PAY_BASELINE, SUM(B.TRAFFIC) TRAF_NOW, 
                     SUM(B.PAYLOAD) PAY_NOW, 100*(SUM(B.TRAFFIC)/SUM(A.TRAFFIC)-1) GROWTH_TRAFFIC, 
                     100*(SUM(B.PAYLOAD)/SUM(A.PAYLOAD)-1) GROWTH_PAYLOAD, MAX(B.STARTTIME) STARTTIME FROM
                     
                     (SELECT WEEKDAY(resulttime) WD, HOUR(resulttime) JAM,resulttime STARTTIME,
                     SUM(traffic_erlang) TRAFFIC, SUM(payload_MByte) PAYLOAD FROM productivity
-                    WHERE DATE(resulttime) >= '2023-02-03' AND DATE(resulttime) <= '2023-02-09'
+                    WHERE DATE(resulttime) >= '2026-08-24' AND DATE(resulttime) <= '2026-08-30'
                     GROUP BY WD, JAM) A
                     JOIN (
                     SELECT WEEKDAY(resulttime) WD, HOUR(resulttime) JAM, resulttime STARTTIME, SUM(traffic_erlang) TRAFFIC, SUM(payload_MByte) PAYLOAD FROM productivity
@@ -48,7 +48,7 @@ module.exports ={
                     
                     (SELECT WEEKDAY(resulttime) WD,resulttime STARTTIME, 
                     SUM(traffic_erlang) TRAFFIC, SUM(payload_MByte) PAYLOAD FROM productivity
-                    WHERE DATE(resulttime) >= '2023-02-03' AND DATE(resulttime) <= '2023-02-09'
+                    WHERE DATE(resulttime) >= '2026-08-24' AND DATE(resulttime) <= '2026-08-30'
                     GROUP BY WD) A
                     JOIN (
                     SELECT WEEKDAY(resulttime) WD,resulttime STARTTIME, SUM(traffic_erlang) TRAFFIC, SUM(payload_MByte) PAYLOAD FROM productivity
@@ -61,12 +61,10 @@ module.exports ={
                     // console.log(results)
                     if(error) throw error;  
                     var dataHourly = [{
-
                         "TRAFFIC": resultsBaseline[0].TRAF_NOW,
                         "PAYLOAD": resultsBaseline[0].PAY_NOW,
                         "GROWTH_TRAFFIC": resultsBaseline[0].GROWTH_TRAFFIC,
                         "GROWTH_PAYLOAD": resultsBaseline[0].GROWTH_PAYLOAD
-                    
                     }];
                     var dataDaily = [{
     

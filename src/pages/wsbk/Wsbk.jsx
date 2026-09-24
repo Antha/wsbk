@@ -111,8 +111,18 @@ const Wsbk = () => {
   const [reportData, setReportData] = useState('');
   var uriSegment = window.location.pathname.split("/").pop();
 
+  const getBaseURL = () => {
+    const hostname = window.location.hostname; // ambil host dari browser
+
+    if (hostname === "localhost" || hostname === "127.0.0.1") {
+      return "https://localhost:8479/motogp-2026";
+    } else {
+      return "https://10.65.103.51:8479/motogp-2026";
+    }
+  };
+
   const getdataProductivity = async () => {
-    axios('https://10.65.103.51:8479/wsbk-2023/api/payloadtraffic',{
+    axios(`${getBaseURL()}/api/payloadtraffic`,{
       method: 'GET',
       headers: {
           'key': `bf931496409d570ca09cc0d30446b325`,
@@ -128,6 +138,7 @@ const Wsbk = () => {
           payload.push({"RESULTTIME" : moment(res.data.resultData[0][i].STARTTIME).zone('+0000').format('DD-MM-YYYY HH:mm'), "PAYLOAD" : res.data.resultData[0][i].PAYLOAD});
           traffic.push({"RESULTTIME" : moment(res.data.resultData[0][i].STARTTIME).zone('+0000').format('DD-MM-YYYY HH:mm'), "TRAFFIC" : res.data.resultData[0][i].TRAFFIC});
         }
+
         console.log(traffic)
         setDataPayloadChart(payload);
         setDataTrafficChart(traffic);
@@ -139,6 +150,7 @@ const Wsbk = () => {
           payloaddaily.push({"RESULTTIME" : moment(popdatapayloadtraffic[i].RESULTTIME).format('DD-MM-YYYY'), "PAYLOAD" : popdatapayloadtraffic[i].PAYLOAD});
           trafficdaily.push({"RESULTTIME" : moment(popdatapayloadtraffic[i].RESULTTIME).format('DD-MM-YYYY'), "TRAFFIC" : popdatapayloadtraffic[i].TRAFFIC});
         }
+
         setDataPayloadChartDaily(payloaddaily);
         setDataTrafficChartDaily(trafficdaily);
 
@@ -154,7 +166,7 @@ const Wsbk = () => {
   }
 
   const getProductivityTopTraffic = async () => {
-    axios('https://10.65.103.51:8443/royal-wedding/apI/payloadtraffic/poi/GROWTH_TRAFFIC/DESC',{
+    axios(`${getBaseURL()}/api/payloadtraffic/poi/GROWTH_TRAFFIC/DESC`,{
       method: 'GET',
       headers: {
           'key': `bf931496409d570ca09cc0d30446b325`,
@@ -173,7 +185,7 @@ const Wsbk = () => {
   }
 
   const getProductivityWorstTraffic = async () => {
-    axios('https://10.65.103.51:8443/royal-wedding/apI/payloadtraffic/poi/GROWTH_TRAFFIC/ASC',{
+    axios('https://10.65.103.51:8443/royal-wedding/api/payloadtraffic/poi/GROWTH_TRAFFIC/ASC',{
       method: 'GET',
       headers: {
           'key': `bf931496409d570ca09cc0d30446b325`,
@@ -345,7 +357,7 @@ const Wsbk = () => {
 
   // map
   const getDataMap = async () => {
-    axios('https://10.65.103.51:8479/wsbk-2023/api/poi/map/first',{
+    axios(`${getBaseURL()}/api/poi/map/first`,{
       method: 'GET',
       headers: {
           'key': `bf931496409d570ca09cc0d30446b325`,
@@ -364,7 +376,7 @@ const Wsbk = () => {
   }
   
   const getDataMapPoi = async () => {
-    axios('https://10.65.103.51:8479/wsbk-2023/api/poi',{
+    axios(`${getBaseURL()}/api/poi`,{
       method: 'GET',
       headers: {
           'key': `bf931496409d570ca09cc0d30446b325`,
@@ -447,7 +459,7 @@ const Wsbk = () => {
   }
 
   const getDataTopRoamersChart = async () => {
-    axios('https://10.65.103.51:8479/wsbk-2023/api/vlr/chart',{
+    axios(`${getBaseURL()}/api/vlr/chart`,{
       method: 'GET',
       headers: {
           'key': `bf931496409d570ca09cc0d30446b325`,
@@ -473,7 +485,7 @@ const Wsbk = () => {
 
   // GET DATA ALARM POI
   const getDataAlarm = async () => {
-    axios('https://10.65.103.51:8479/wsbk-2023/api/poi-alarm',{
+    axios(`${getBaseURL()}/api/poi-alarm`,{
       method: 'GET',
       headers: {
           'key': `bf931496409d570ca09cc0d30446b325`,
@@ -654,7 +666,7 @@ const Wsbk = () => {
 
 
   const showModalDownloadReport = async() => {
-    axios('https://10.65.103.51:8479/wsbk-2023/api/report/summary',{
+    axios(`${getBaseURL()}/api/report/summary`,{
       method: 'GET',
       headers: {
           'key': `bf931496409d570ca09cc0d30446b325`,
@@ -740,80 +752,80 @@ const Wsbk = () => {
     showSidebar();
     getDataMap();
     getDataMapPoi();
-    getDataMapPeople();
+    // getDataMapPeople();
     getdataProductivity();
-    getProductivityTopTraffic();
-    getProductivityWorstTraffic();
-    getProductivityTopPayload();
-    getProductivityWorstPayload();
-    getProductivityTopTrafficSite();
-    getProductivityWorstTrafficSite();
-    getProductivityTopPayloadSite();
-    getProductivityWorstPayloadSite();
-    getProductivityChartTraffic();
-    getProductivityChartPayload();
+    // getProductivityTopTraffic();
+    // getProductivityWorstTraffic();
+    // getProductivityTopPayload();
+    // getProductivityWorstPayload();
+    // getProductivityTopTrafficSite();
+    // getProductivityWorstTrafficSite();
+    // getProductivityTopPayloadSite();
+    // getProductivityWorstPayloadSite();
+    // getProductivityChartTraffic();
+    // getProductivityChartPayload();
 
     // getDataTopApps();
 
     // getDataTopUserContry();
-    getDataTopRoamersChart();
+    // getDataTopRoamersChart();
 
     getDataAlarm();
 
-    getDataCore();
-    getDataDetailCore();
-    getDetailTicket();
-    getTableTicket();
+    // getDataCore();
+    // getDataDetailCore();
+    // getDetailTicket();
+    // getTableTicket();
 
-    getTokenSmartcare();
+    // getTokenSmartcare();
 
-    getDataUserSchedule();
+    // getDataUserSchedule();
 
     // getDataDetailTopApps();
-    getDataDetailRoamers();
+    // getDataDetailRoamers();
 
-    getDate();
-    getHour();
-    getHourNow();
+    // getDate();
+    // getHour();
+    // getHourNow();
     
     setInterval(()=>{
       getDataMap();
       getDataMapPoi();
-      getDataMapPeople();
+      // getDataMapPeople();
       getDataAlarm();
     }, 180 * 1000);
 
     setInterval(()=>{
       getdataProductivity();
-      getProductivityTopTraffic();
-      getProductivityWorstTraffic();
-      getProductivityTopPayload();
-      getProductivityWorstPayload();
-      getProductivityTopTrafficSite();
-      getProductivityWorstTrafficSite();
-      getProductivityTopPayloadSite();
-      getProductivityWorstPayloadSite();
-      getProductivityChartTraffic();
-      getProductivityChartPayload();
+      // getProductivityTopTraffic();
+      // getProductivityWorstTraffic();
+      // getProductivityTopPayload();
+      // getProductivityWorstPayload();
+      // getProductivityTopTrafficSite();
+      // getProductivityWorstTrafficSite();
+      // getProductivityTopPayloadSite();
+      // getProductivityWorstPayloadSite();
+      // getProductivityChartTraffic();
+      // getProductivityChartPayload();
 
-      // getDataTopApps();
+      // // getDataTopApps();
 
       // getDataTopUserContry();
-      getDataTopRoamersChart();
+      // getDataTopRoamersChart();
 
-      getTokenSmartcare();
+      // getTokenSmartcare();
 
-      getDataUserSchedule();
+      // getDataUserSchedule();
 
-      getDataCore();
-      getDataDetailCore();
-      getDetailTicket();
-      getTableTicket();
+      // getDataCore();
+      // getDataDetailCore();
+      // getDetailTicket();
+      // getTableTicket();
 
       // getDataDetailTopApps();
-      getDataDetailRoamers();
+      // getDataDetailRoamers();
 
-      getHour();
+      // getHour();
     }, 900 * 1000);
 
     // setTimeout(()=>{
@@ -821,13 +833,13 @@ const Wsbk = () => {
     // }, 1.3 * 1000);
 
     setInterval(()=>{
-      getHourNow();
+      //getHourNow();
     }, 1000);
   }, []);
   return (
     <div>
       <Helmet>
-        <title>Dashboard WSBK 2023</title>
+        <title>Dashboard Event Motogp 2026</title>
       </Helmet>
 
       <FlashScreen/>
@@ -840,16 +852,16 @@ const Wsbk = () => {
                 ☰
               </a>
               <div style={{marginRight: '18px'}}>
-                <img height="68px" src="/wsbk-2023/images/WSBK.png" alt="WSBK"/>
+                <img height="68px" src="/motogp-2026/images/WSBK.png" alt="WSBK"/>
               </div>
               <div>
                 <div style={{color: '#fff',fontSize: '30px', fontWeight: '700', marginTop: '3px', letterSpacing: '1px'}}>EMPEROR</div>
-                <span style={{ display: 'block', marginTop: '-4px', fontSize: '14px', marginBottom: '4px', color:"#fff"}}>Event Monitoring Platform Provided for Area 3 - WSBK 2023</span>
+                <span style={{ display: 'block', marginTop: '-4px', fontSize: '14px', marginBottom: '4px', color:"#fff"}}>Event Monitoring Platform Provided for Area 3 - Event MotoGP 2026</span>
               </div>
             </div>
             <div>
               <div style={{display: 'flex', marginLeft: '110px', textAlign: 'right'}}>
-                <img height="46px" src="/wsbk-2023/images/icon-telkomsel.png" alt="icon-telkomsel" style={{marginTop: '4px'}}/>
+                <img height="46px" src="/motogp-2026/images/icon-telkomsel.png" alt="icon-telkomsel" style={{marginTop: '4px'}}/>
               </div>
               <span style={{margin: '0px', fontSize: '10px', textAlign: 'right'}}>Update: {date}; {hour} WITA | Time Now: {hourNow}</span>
             </div>
@@ -863,10 +875,10 @@ const Wsbk = () => {
               <MapG20 dataMapIcon={mapIcon} dataMapArea={mapArea} dataMapPoi={mapPoi} uri={uriSegment} dataMapPeople={mapPeople}/>
             </div>
             <div style={{display: 'flex', marginTop: '6px'}}>
-              <CardAlarmPOICategory dataAlarm={dataAlarmPoi} dataPoi={'EXIT POINT'} title='EXIT POINT' iconSrc="/wsbk-2023/paragames/ic_diamond_airplane_dark.png" index={0}/>
-              <CardAlarmPOICategory dataAlarm={dataAlarmPoi} dataPoi={'MAIN VENUE'} title='MAIN VENUE' iconSrc="/wsbk-2023/paragames/ic_diamond_mainvenue_dark.png" index={1}/>
-              <CardAlarmPOICategory dataAlarm={dataAlarmPoi} dataPoi={'HOSPITALITY'} title='HOSPITALITY' iconSrc="/wsbk-2023/paragames/ic_diamond_hospital_dark.png" index={2}/>
-              <CardAlarmPOICategory dataAlarm={dataAlarmPoi} dataPoi={'SUPPORTING VENUE'} title='RECREATION' iconSrc="/wsbk-2023/paragames/ic_diamond_recreation_dark.png" index={3}/>
+              <CardAlarmPOICategory dataAlarm={dataAlarmPoi} dataPoi={'EXIT POINT'} title='EXIT POINT' iconSrc="/motogp-2026/paragames/ic_diamond_airplane_dark.png" index={0}/>
+              <CardAlarmPOICategory dataAlarm={dataAlarmPoi} dataPoi={'MAIN VENUE'} title='MAIN VENUE' iconSrc="/motogp-2026/paragames/ic_diamond_mainvenue_dark.png" index={1}/>
+              <CardAlarmPOICategory dataAlarm={dataAlarmPoi} dataPoi={'HOSPITALITY'} title='HOSPITALITY' iconSrc="/motogp-2026/paragames/ic_diamond_hospital_dark.png" index={2}/>
+              <CardAlarmPOICategory dataAlarm={dataAlarmPoi} dataPoi={'SUPPORTING VENUE'} title='RECREATION' iconSrc="/motogp-2026/paragames/ic_diamond_recreation_dark.png" index={3}/>
             </div>
             <div>
               <div style={{backgroundColor: '#333e50', marginTop: '6px', color: '#eee'}}>
@@ -890,7 +902,7 @@ const Wsbk = () => {
                       <Col span={9} style={{display: 'flex', justifyContent: 'end', padding: '0px 8px', alignItems: "center"}}>
                         <div>
                           {/* <img height="25px" src="/images/icon-dessy.png" alt="icon-dessy" style={{marginTop: '1px', marginRight: '12px'}}/> */}
-                          <img height="50px" src="/wsbk-2023/images/NPAC_A3.png" alt="icon-diamond" style={{marginTop: '1px', marginRight: '12px'}}/>
+                            <img height="50px" src="/motogp-2026/images/NPAC_A3.png" alt="icon-diamond" style={{marginTop: '1px', marginRight: '12px'}}/>
                           {/* <img height="45px" src="/images/logo-inhouse-white.png" alt="icon-inhouse" style={{marginTop: '1px',}}/> */}
                         </div>
                       </Col>
@@ -911,7 +923,7 @@ const Wsbk = () => {
                     {/*<HeaderTitleCard title="PRODUCTIVITY" linkDetail="http://10.65.181.175/KTTG20/" />*/}
                     <HeaderTitleCard title="PRODUCTIVITY" />
                     {/* <a onClick={()=>showModalProductivity()} href="#" rel="noreferrer" style={{padding: '0px 2px 2px 2px',position: "relative", marginTop: "-25px", marginRight: "111px", float: "right"}} className="hoverIconHeadre">
-                      <img height="15px" src="/wsbk-2023/images/icons/details.png" alt="click details"/>
+                      <img height="15px" src="/motogp-2026/images/icons/details.png" alt="click details"/>
                     </a> */}
                     <Tabs defaultActiveKey="1" className="ant-paragames" style={{marginTop: "15px"}}>
                       <TabPane tab="Hourly" key="11">
