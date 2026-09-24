@@ -839,7 +839,7 @@ const Wsbk = () => {
   return (
     <div>
       <Helmet>
-        <title>Dashboard Event Motogp 2026</title>
+        <title>Dashboard MotoGP Mandalika 2026</title>
       </Helmet>
 
       <FlashScreen/>
@@ -852,11 +852,11 @@ const Wsbk = () => {
                 ☰
               </a>
               <div style={{marginRight: '18px'}}>
-                <img height="68px" src="/motogp-2026/images/WSBK.png" alt="WSBK"/>
+                <img height="68px" src="/motogp-2026/images/Motogp_white.png" alt="MOTOGP"/>
               </div>
               <div>
                 <div style={{color: '#fff',fontSize: '30px', fontWeight: '700', marginTop: '3px', letterSpacing: '1px'}}>EMPEROR</div>
-                <span style={{ display: 'block', marginTop: '-4px', fontSize: '14px', marginBottom: '4px', color:"#fff"}}>Event Monitoring Platform Provided for Area 3 - Event MotoGP 2026</span>
+                <span style={{ display: 'block', marginTop: '-4px', fontSize: '14px', marginBottom: '4px', color:"#fff"}}>Event Monitoring Platform - MotoGP Mandalika 2026</span>
               </div>
             </div>
             <div>
@@ -874,11 +874,12 @@ const Wsbk = () => {
             <div style={{height: '480px'}}>
               <MapG20 dataMapIcon={mapIcon} dataMapArea={mapArea} dataMapPoi={mapPoi} uri={uriSegment} dataMapPeople={mapPeople}/>
             </div>
-            <div style={{display: 'flex', marginTop: '6px'}}>
+            <div style={{display: 'flex', marginTop: '10px'}}>
               <CardAlarmPOICategory dataAlarm={dataAlarmPoi} dataPoi={'EXIT POINT'} title='EXIT POINT' iconSrc="/motogp-2026/paragames/ic_diamond_airplane_dark.png" index={0}/>
               <CardAlarmPOICategory dataAlarm={dataAlarmPoi} dataPoi={'MAIN VENUE'} title='MAIN VENUE' iconSrc="/motogp-2026/paragames/ic_diamond_mainvenue_dark.png" index={1}/>
               <CardAlarmPOICategory dataAlarm={dataAlarmPoi} dataPoi={'HOSPITALITY'} title='HOSPITALITY' iconSrc="/motogp-2026/paragames/ic_diamond_hospital_dark.png" index={2}/>
-              <CardAlarmPOICategory dataAlarm={dataAlarmPoi} dataPoi={'SUPPORTING VENUE'} title='RECREATION' iconSrc="/motogp-2026/paragames/ic_diamond_recreation_dark.png" index={3}/>
+              <CardAlarmPOICategory dataAlarm={dataAlarmPoi} dataPoi={'RECREATION'} title='RECREATION' iconSrc="/motogp-2026/paragames/ic_diamond_recreation_dark.png" index={3}/>
+              <CardAlarmPOICategory dataAlarm={dataAlarmPoi} dataPoi={'ROUTE'} title='ROUTE' iconSrc="/motogp-2026/paragames/road_white.png" index={4}/>
             </div>
             <div>
               <div style={{backgroundColor: '#333e50', marginTop: '6px', color: '#eee'}}>
@@ -896,15 +897,11 @@ const Wsbk = () => {
 
                         <div>
                           <div style={{fontSize: '13px', marginTop: '0px'}}>Develop By:</div>
-                          <div style={{fontSize: '12px', color: '#bbb', fontStyle: 'italic', margin: '0px 0px 0px', paddingBottom: "3px"}}>NPAC</div>
+                          <div style={{fontSize: '12px', color: '#bbb', fontStyle: 'italic', margin: '0px 0px 0px', paddingBottom: "3px"}}>RNOP BALINUSRA</div>
                         </div>
                       </Col>
                       <Col span={9} style={{display: 'flex', justifyContent: 'end', padding: '0px 8px', alignItems: "center"}}>
-                        <div>
-                          {/* <img height="25px" src="/images/icon-dessy.png" alt="icon-dessy" style={{marginTop: '1px', marginRight: '12px'}}/> */}
-                            <img height="50px" src="/motogp-2026/images/NPAC_A3.png" alt="icon-diamond" style={{marginTop: '1px', marginRight: '12px'}}/>
-                          {/* <img height="45px" src="/images/logo-inhouse-white.png" alt="icon-inhouse" style={{marginTop: '1px',}}/> */}
-                        </div>
+                        
                       </Col>
                     </Row>
                   </div>

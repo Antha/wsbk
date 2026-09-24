@@ -178,12 +178,12 @@ module.exports ={
             if (err) throw err;
             connection.query(
                 `   
-                SELECT (CASE WHEN UCASE(Type_Venue) = 'RECREATION' THEN 'SUPPORTING VENUE' ELSE UCASE(Type_Venue) END )CATEGORY, 
+                SELECT UCASE(Type_Venue) AS CATEGORY, 
                 COUNT(CASE WHEN is_down = 1 THEN 1 END) DOWN,
                 COUNT(CASE WHEN is_down = 0 AND is_capacity = 1 THEN 1 END) CAPACITY,
                 COUNT(CASE WHEN is_down = 0 AND is_capacity = 0 AND is_quality = 1 THEN 1 END) QUALITY,
                 COUNT(CASE WHEN is_down = 0 AND is_capacity = 0 AND is_quality = 0 THEN 1 END) GREEN
-                FROM map_sitelist_kpi WHERE  Type_Venue <> 'route'
+                FROM map_sitelist_kpi
                 GROUP BY CATEGORY
                 `
                 , function (error, results) {
