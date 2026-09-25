@@ -74,7 +74,7 @@ const CardAlarmPOICategory = ({dataAlarm, dataPoi, title, iconSrc, index}) => {
   })
 
   return (
-    <div className="full-width color-white" style={{marginRight: `${index < 3 ? '6px' : '0px'}`}}>
+    <div className="full-width color-white" style={{marginRight: `${index < 4 ? '6px' : '0px'}`}}>
       <div className="dark-bg">
         <HeaderTitleCard title={title} iconSrc={iconSrc} widthTitleWrapper="80%" widthIconWrapper="20%"/>
         <div className="div-alarm">

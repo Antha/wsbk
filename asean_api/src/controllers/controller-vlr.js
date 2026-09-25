@@ -1,6 +1,8 @@
 const config = require('../configs/db-event-42');
+const config_13 = require('../configs/db-event-13');
 const mysql = require('mysql');
 const pool = mysql.createPool(config);
+const pool_13 = mysql.createPool(config_13);
 
 pool.on('error',(err)=> {
     console.error(err);
@@ -14,16 +16,15 @@ module.exports ={
             if (err) throw err;
             connection.query(
                 `
-                SELECT LEFT(A.datehour,char_length( A.datehour)-3)  RESULTTIME,VLR, TOTAL_USER FROM
-                    (select TIME_ID datehour, sum(rsaverage)TOTAL_USER from subsperplmn_2302 
-                    where TIME_ID > (select max(TIME_ID) - interval 7 day from subsperplmn_2302 )
-                    group by TIME_ID ) A
-                    join 
-                    ( select datetime datehour, sum(vlr_real) VLR from ndm.vlr_kab_hour 
-                    where datetime> (select max(datetime) - interval 7 day from ndm.vlr_kab_hour ) and KABUPATEN ='LOMBOK TENGAH'
-                    group by datetime
-                    )B
-                    ON A.datehour = B.datehour
+                    SELECT 
+                        DATE_FORMAT(resulttime,'%Y-%m-%d %H %i %s') resulttime,
+                        SUM(t.maximum_user_number) AS vlr_domestic
+                        FROM ch_balnus.4g_kpi_hourly_202638 t
+                        WHERE resulttime >= (
+                        SELECT DATE(MAX(resulttime)) 
+                        FROM ch_balnus.4g_kpi_hourly_202638
+                    )
+                    GROUP BY resulttime;
                 `
             , function (error, results) {
                 if(error) throw error;  
@@ -57,7 +58,7 @@ module.exports ={
                 and A.HR = B.HR`;
 
                 connection.query(
-                    query
+                  query
                 , function (error, resultsGrowth) {
                     if(error) throw error;  
                     var growth = [{
@@ -66,7 +67,6 @@ module.exports ={
                         "NUMUSER": (resultsGrowth[0].NUMUSER == null)? 0 : resultsGrowth[0].NUMUSER,
                         "GROWTH": (resultsGrowth[0].GROWTH == null)? 0 : resultsGrowth[0].GROWTH /100,
                         "DELTA": (resultsGrowth[0].DELTA == null)? 0 : resultsGrowth[0].DELTA
-                    
                     }];
                     res.send({ 
                         statusCode: 200, 
@@ -74,6 +74,25 @@ module.exports ={
                         data: results ,
                         growth : growth
                     });
+                });
+            });
+            connection.release();
+        })
+    },
+    getTopOperator(req,res){
+        // console.log(req.header('user-agent'))
+        pool_13.getConnection(function(err, connection) {
+            if (err) throw err;
+            connection.query(
+                `
+                    SELECT operator , COUNT(msisdn) _count FROM \`roamer_all_msisdn\`  GROUP BY operator ORDER BY _count DESC LIMIT 5
+                `
+            , function (error, results) {
+                if(error) throw error;  
+                res.send({ 
+                    statusCode: 200, 
+                    statusMessage: 'Success',
+                    data: results
                 });
             });
             connection.release();

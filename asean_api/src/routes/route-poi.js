@@ -63,6 +63,9 @@ router.get(root+'/productivity/payload', payloadtraffic.getPayloadCategory);
 // get data vlr
 router.get(root+'/vlr/chart', vlr.getVLRChart);
 
+// get top operator
+router.get(root+'/vlr/top_operator', vlr.getTopOperator);
+
 // get data engineer
 router.get(root+'/engineer', engineer.getEngineer);
 

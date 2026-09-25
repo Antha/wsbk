@@ -2,7 +2,7 @@ import React from "react";
 import { Layout } from "antd";
 import "./SideBar.css";
 import { OrderedListOutlined } from '@ant-design/icons';
-const SideBar = ({ showModal, visible, showVisible }) => {
+const SideBar = ({ showModal, visible, showVisible, please_wait }) => {
     return (
         <Layout.Sider
             className="sidebar"
@@ -25,7 +25,7 @@ const SideBar = ({ showModal, visible, showVisible }) => {
             </div>
             <ul>
                 <li>
-                    <a onClick={()=>showModal()} href="#" rel="noreferrer"><OrderedListOutlined style={{marginRight:"10px"}}/> Download Report</a>
+                    <a onClick={()=>showModal()} href="#" rel="noreferrer"><OrderedListOutlined style={{marginRight:"10px"}}/> Download Report <i>{please_wait}</i></a>
                 </li>
             </ul>
         </Layout.Sider>

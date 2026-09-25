@@ -3,9 +3,8 @@ import { AreaChart, Legend, Area, XAxis, YAxis, CartesianGrid, Tooltip, Responsi
   
 const ChartRoamers = ({data}) => {
   const inputLabels = [
-    
-    {databar: "VLR", key: "VLR", color: "#02B075", colorid: "url(#color2)", yAxisId:"left"},
-    {databar: "TOTAL_USER", key: "ROAMERS", color: "#F94C48", colorid: "url(#color1)", yAxisId:"right"},
+    {databar: "vlr_domestic", key: "vlr_domestic", color: "#02B075", colorid: "url(#color2)", yAxisId:"left"},
+    // {databar: "ROAMERS", key: "ROAMERS", color: "#F94C48", colorid: "url(#color1)", yAxisId:"right"},
   ]
 
   const [barProps, setBarProps] = useState(
@@ -39,18 +38,18 @@ const ChartRoamers = ({data}) => {
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart
-        width={500}
+        width={1000}
         height={200}
         data={data}
         margin={{
-          top: 0,
-          right: 20,
-          left: -20,
-          bottom: -4
+          top: 10,
+          right: 0,
+          left: 0,
+          bottom: 0
         }}
       >
         <CartesianGrid strokeDasharray="3 3" stroke="#888" />
-        <XAxis interval={50} dataKey="RESULTTIME" style={{fontSize: '9px'}} tick={{ fill: '#f7ffff' }} />
+        <XAxis interval={50} dataKey="resulttime" style={{fontSize: '9px'}} tick={{ fill: '#f7ffff' }} />
         <YAxis yAxisId="left" orientation="left" style={{fontSize: '10px'}} tick={{ fill: '#f7ffff'}}/>
         <YAxis yAxisId="right" domain={[null, 80000]} orientation="right" style={{fontSize: '10px'}} tick={{ fill: '#f7ffff'}}/>
         <Tooltip formatter={(number)=>dataFormater(number)} />

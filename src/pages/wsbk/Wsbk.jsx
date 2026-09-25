@@ -93,6 +93,25 @@ const Wsbk = () => {
   const [chartProductivityTraffic, setChartProductivityTraffic] = useState([]);
   const [chartProductivityPayload, setChartProductivityPayload] = useState([]);
 
+  const [apps, setApps] = useState([
+    { name: "FB", users: "3.859", data: "302.1 GB" },
+    { name: "TikTok", users: "794", data: "226.1 GB" },
+    { name: "WhatsApp", users: "4.732", data: "201.4 GB" },
+    { name: "HTTPS", users: "3.173", data: "113.4 GB" },
+    { name: "QUIC_IETF", users: "2.381", data: "106.4 GB" },
+  ]);
+
+  const [coreMetrics, setCoreMetrics] = useState([
+    { name: "SCR", value: "97.84%" },
+    { name: "CCR", value: "100.00%" },
+    { name: "2G Attach SR", value: "99.90%" },
+    { name: "2G PDP SR", value: "99.65%" },
+    { name: "4G Combine Attach SR", value: "94.63%" },
+    { name: "4G DEFAULT Bearer SR", value: "95.65%" },
+  ]);
+
+   const [operators, setOperators] = useState([]);
+
   const [mapIcon, setMapIcon] = useState([]);
   const [mapArea, setMapArea] = useState([]);
   const [mapPoi, setMapPoi] = useState([]);
@@ -104,9 +123,11 @@ const Wsbk = () => {
 
   const [growthRoamers, setGrowthRoamers] = useState(0);
   const [growthVLR, setGrowthVLR] = useState(0);
+  const [subsVLR, setSubsVLR] = useState(0);
 
   const [modalDownloadReport, setModalDownloadReport] = useState(false);
   const [sidebar, setSidebar] = useState(false);
+  const [please_wait, setPleaseWait] = useState("")
 
   const [reportData, setReportData] = useState('');
   var uriSegment = window.location.pathname.split("/").pop();
@@ -470,10 +491,11 @@ const Wsbk = () => {
     .then(res => {
       if(!res.data.error){
         setDataRoamersChart(res.data.data);
-        setGrowthRoamers(res.data.growth[0].DELTA)
-        setGrowthVLR(res.data.growth[0].GROWTH)
-        
-        setDataAllUserRoamers(res.data.data.slice(-1).pop().VLR);
+        setSubsVLR(res.data.data[res.data.data.length-1]["vlr_domestic"])
+
+        // setGrowthRoamers(res.data.growth[0].DELTA)
+        // setGrowthVLR(res.data.growth[0].GROWTH)
+        // setDataAllUserRoamers(res.data.data.slice(-1).pop().VLR);
         // setDataAllUserRoamers(res.data.data.slice(-1).pop().TOTAL_USER + res.data.data.slice(-1).pop().VLR);
       }
     })
@@ -482,6 +504,27 @@ const Wsbk = () => {
     })
   }
   // END ROAMER 
+
+  // OPERATORS
+  const getDataTopOperator = async () => {
+    axios(`${getBaseURL()}/api/vlr/top_operator`,{
+      method: 'GET',
+      headers: {
+          'key': `bf931496409d570ca09cc0d30446b325`,
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json'
+      }
+    })
+    .then(res => {
+      if(!res.data.error){
+        setOperators(res.data.data);
+      }
+    })
+    .catch(function(error){
+        console.log(error)
+    })
+  }
+  // END OPERATORS 
 
   // GET DATA ALARM POI
   const getDataAlarm = async () => {
@@ -666,6 +709,7 @@ const Wsbk = () => {
 
 
   const showModalDownloadReport = async() => {
+    setPleaseWait("(Please Wait ...)")
     axios(`${getBaseURL()}/api/report/summary`,{
       method: 'GET',
       headers: {
@@ -676,7 +720,7 @@ const Wsbk = () => {
     })
     .then(res => {
       if(!res.data.error){
-       
+        setPleaseWait("");
         setReportData(res.data.data);
         setModalDownloadReport(!modalDownloadReport);
       }
@@ -768,8 +812,8 @@ const Wsbk = () => {
     // getDataTopApps();
 
     // getDataTopUserContry();
-    // getDataTopRoamersChart();
-
+    getDataTopRoamersChart();
+    getDataTopOperator();
     getDataAlarm();
 
     // getDataCore();
@@ -811,7 +855,8 @@ const Wsbk = () => {
       // // getDataTopApps();
 
       // getDataTopUserContry();
-      // getDataTopRoamersChart();
+      getDataTopRoamersChart();
+      getDataTopOperator();
 
       // getTokenSmartcare();
 
@@ -971,48 +1016,74 @@ const Wsbk = () => {
                   </div>
                 </div>
               </div>
-
-              <div>
-               
+              <div style={{
+                display: "flex",
+                justifyContent: "space-between",
+                backgroundColor: "#333e50",
+                marginTop: "4px",
+              }}>
+                <div style={{flex: 1}}>
+                  <HeaderTitleCard title="Top Apps" />
+                  <a onClick={()=>showModalRoamers()} href="#" rel="noreferrer" className="hoverIconHeadre" style={{float: "right", marginTop: "-25px", marginRight: "40px"}}>
+                    {/* icon */}
+                  </a>
+                  <div style={{color: "white" , fontSize:"12px", marginTop:"10px"}}>
+                    <ul>
+                      {apps.map((app, idx) => (
+                        <li key={idx}>
+                          {app.name}: {app.users} User ({app.data})
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+                <div style={{flex: 1}}>
+                  <HeaderTitleCard title="Core" />
+                  <a onClick={()=>showModalRoamers()} href="#" rel="noreferrer" className="hoverIconHeadre" style={{float: "right", marginTop: "-25px", marginRight: "40px"}}>
+                    {/* icon */}
+                  </a>
+                  <div style={{color: "white" , fontSize:"12px", marginTop:"10px"}}>
+                    <ul>
+                      {coreMetrics.map((metric, idx) => (
+                        <li key={idx}>
+                          {metric.name}: {metric.value}
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
               </div>
-
               <div>
                 <div style={{backgroundColor: '#333e50', marginTop: '4px', paddingBottom: '4px'}}>
-                  <HeaderTitleCard title="VLR" />
+                  <HeaderTitleCard title="Roamer" />
                   <a onClick={()=>showModalRoamers()} href="#" rel="noreferrer" style={{padding: '0px 2px 2px 2px',position: "relative", marginTop: "-25px", marginRight: "40px", float: "right"}} className="hoverIconHeadre">
                     {/* <img height="15px" src="/images/icons/details.png" alt="click details"/> */}
                   </a>
                   <div style={{display: 'flex', justifyContent: 'space-between', margin: '6px'}}>
                     <div style={{width: '100%', display: "block", position: "relative"}}>
                       <div style={{color: '#f9fbfe'}}>
-                        <span style={{fontSize: '11px', fontWeight: '700', marginTop: "-20px", position: "relative", display: 'flex', alignItems:"center"}}>#Incremental VLR <div style={{fontSize: "15px", margin:"0px 1px 0px 3px"}}>{(growthVLR).toFixed(2)}</div> % or <div style={{fontSize: "15px", margin:"0px 1px 0px 3px"}}>{growthRoamers}</div> Subs</span>
-                        <span style={{fontSize: '11px', fontWeight: '700'}}>#All User</span>
-                        <span style={{fontSize: '26px', fontWeight: '700', marginLeft: '7px'}}>{parseInt(dataAllUserRoamers) > 0 ? numberWithCommas(dataAllUserRoamers) : '0'}  </span>
-                        <span style={{fontSize: '11px'}}> Subscriber</span>
+                        <span style={{fontSize: '11px', fontWeight: '700', marginTop: "-20px", position: "relative", display: 'flex', alignItems:"center"}}>#All Total Subscriber {subsVLR} Subs</span>
                       </div>
-                      
-                      <div style={{marginLeft: '12px', marginBottom: '10px', color: '#f9fbfe'}}>
-                      {/* {dataRoamersPercentage.length !== 0 ?
-                        <div>
-                          { parseFloat(dataRoamersPercentage) < 0 ?
-                            <span style={{fontSize: '26px', color: '#fe504f', marginRight: '12px'}}>&#9660;</span>
-                            :
-                            <span style={{fontSize: '26px', color: '#06ca07', marginRight: '12px'}}>&#9650;</span>
-                          }
-                          
-                          <span style={{fontSize: '26px', fontWeight: '700'}}>{dataRoamersPercentage}</span>
+                      <div style={{display: "flex", gap: "10px"}}>
+                        <div style={{height: '157px', flex: 1}}>
+                          <ChartRoamers data={dataRoamersChart}/>
                         </div>
-                        : 
-                        <div>
-                          <span style={{fontSize: '26px', color: '#06ca07', marginRight: '12px'}}></span>
-                          <span style={{fontSize: '26px', fontWeight: '700'}}>loading...</span>
+
+                        <div style={{flex: 1, color:"white",  fontSize:"12px"}}>
+                          <span style={{fontSize: '11px'}}>#Top User Country And Operator</span>
+                          <table style={{width: "100%", borderCollapse: "collapse", fontSize: "0.8rem", color: "#fff"}}>
+                            <tbody>
+                              {operators.map((operator, idx) => (
+                                <tr key={idx}>
+                                  <td style={{padding: "2px 4px", borderBottom: "1px solid #333"}}>{operator.operator}</td>
+                                  <td style={{padding: "2px 4px", borderBottom: "1px solid #333"}}>{operator["_count"]}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
                         </div>
-                      } */}
                       </div>
 
-                      <div style={{width: '100%', height: '157px'}}>
-                        <ChartRoamers data={dataRoamersChart}/>
-                      </div>
                       <div style={{textAlign: 'right', fontSize: '9px', color: '#bac3d0', fontStyle: 'italic', marginTop: '-20px', position: "absolute", display:"block", right:"15px"}}>Baseline 03 - 09 February 2023</div>
                       {/* <div style={{textAlign: 'right', fontSize: '12px', color: '#bac3d0', fontStyle: 'italic', marginTop: '-20px', position: "absolute", display:"block", right:"15px"}}>Cluster Solo Raya</div> */}
                     </div>
@@ -1033,7 +1104,7 @@ const Wsbk = () => {
       <ModalTopApps showModal={showModalTopApps} visible={modalTopApps} error={errorGetTableTopApps} loadingData={loadingTableTopApps} detailTopApps={DataDetailTopAppsTable}/>
       <ModalRoamers showModal={showModalRoamers} visible={modalRoamers} error={errorGetTableRoamers} loadingData={loadingTableRoamers} detailRoamers={DataDetailRoamersTable}/>
       <ModalDownloadReport showModal={showModalDownloadReport} visible={modalDownloadReport} data={reportData}/>
-      <Sidebar showModal={showModalDownloadReport} visible={sidebar} showVisible={showSidebar} />
+      <Sidebar showModal={showModalDownloadReport} visible={sidebar} showVisible={showSidebar} please_wait={please_wait} />
     </div>
   );
 }
