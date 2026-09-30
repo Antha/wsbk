@@ -9,6 +9,7 @@ import HeaderTitleCard from "../../compoments/header/HeaderTitleCard";
 import ChartProductivity from "../../compoments/chart/ChartProductivity";
 import ChartProductivityDaily from "../../compoments/chart/ChartProductivityDaily";
 import ChartRoamers from "../../compoments/chart/ChartRoamers";
+import ChartVlrDomestic from "../../compoments/chart/ChartVlrDomestic";
 import CardProductivityPercentage from "../../compoments/card/CardProductivityPercentage";
 // import CardTicket from "../../compoments/card/CardTicket";
 // import CardListTopUserOperatorCountry from "../../compoments/card/CardListTopUserOperatorCountry";
@@ -28,6 +29,7 @@ import moment from "moment";
 const Wsbk = () => {
   const { TabPane } = Tabs;
   const [flashScreen, setFlashScreen] = useState(true);
+  const [isLoadingChartProductivity, setIsLoadingChartProductivity] = useState(true); 
   const [dataPayloadChart, setDataPayloadChart] = useState([]);
   const [dataTrafficChart, setDataTrafficChart] = useState([]);
   const [dataPayloadChartDaily, setDataPayloadChartDaily] = useState([]);
@@ -39,7 +41,9 @@ const Wsbk = () => {
   const [dataTopApps, setDataTopApps] = useState([]);
 
   const [dataTopUserContry, setDataTopUserContry] = useState([]);
+  const [dataVLRDomesticsChart, setDataVLRDomesticsChart] = useState([]);
   const [dataRoamersChart, setDataRoamersChart] = useState([]);
+  const [isLoadingChartRoamer, setIsLoadingChartRoamer] = useState(true); 
   const [dataAllUserRoamers, setDataAllUserRoamers] = useState('');
   const [dataRoamersPercentage, setDataRoamersPercentage] = useState([]);
 
@@ -93,24 +97,9 @@ const Wsbk = () => {
   const [chartProductivityTraffic, setChartProductivityTraffic] = useState([]);
   const [chartProductivityPayload, setChartProductivityPayload] = useState([]);
 
-  const [apps, setApps] = useState([
-    { name: "FB", users: "3.859", data: "302.1 GB" },
-    { name: "TikTok", users: "794", data: "226.1 GB" },
-    { name: "WhatsApp", users: "4.732", data: "201.4 GB" },
-    { name: "HTTPS", users: "3.173", data: "113.4 GB" },
-    { name: "QUIC_IETF", users: "2.381", data: "106.4 GB" },
-  ]);
-
-  const [coreMetrics, setCoreMetrics] = useState([
-    { name: "SCR", value: "97.84%" },
-    { name: "CCR", value: "100.00%" },
-    { name: "2G Attach SR", value: "99.90%" },
-    { name: "2G PDP SR", value: "99.65%" },
-    { name: "4G Combine Attach SR", value: "94.63%" },
-    { name: "4G DEFAULT Bearer SR", value: "95.65%" },
-  ]);
-
-   const [operators, setOperators] = useState([]);
+  const [apps, setApps] = useState([]);
+  const [coreMetrics, setCoreMetrics] =  useState([]);
+  const [operators, setOperators] = useState([]);
 
   const [mapIcon, setMapIcon] = useState([]);
   const [mapArea, setMapArea] = useState([]);
@@ -160,7 +149,6 @@ const Wsbk = () => {
           traffic.push({"RESULTTIME" : moment(res.data.resultData[0][i].STARTTIME).zone('+0000').format('DD-MM-YYYY HH:mm'), "TRAFFIC" : res.data.resultData[0][i].TRAFFIC});
         }
 
-        console.log(traffic)
         setDataPayloadChart(payload);
         setDataTrafficChart(traffic);
 
@@ -179,6 +167,8 @@ const Wsbk = () => {
         setDataTrafficPresentage(res.data.resultData[1][0].GROWTH_TRAFFIC.toFixed(2));
         setDataPayloadPresentageDaily(res.data.resultData[3][0].GROWTH_PAYLOAD.toFixed(2));
         setDataTrafficPresentageDaily(res.data.resultData[3][0].GROWTH_TRAFFIC.toFixed(2));
+
+        setIsLoadingChartProductivity(false)
       }
     })
     .catch(function(error){
@@ -434,25 +424,6 @@ const Wsbk = () => {
     })
   }
 
-  const getDataTopApps = async () => {
-    axios('http://10.54.36.55:9007/dashboard-g20/api/paragames/topapps',{
-      method: 'GET',
-      headers: {
-          'key': `bf931496409d570ca09cc0d30446b325`,
-          "Access-Control-Allow-Origin": "*",
-          'Content-Type': 'application/json'
-      }
-    })
-    .then(res => {
-      if(!res.data.error){
-        setDataTopApps(res.data.resultData);
-      }
-    })
-    .catch(function(error){
-        console.log(error)
-    })
-  }
-
   // ROAMER 
   const getDataTopUserContry = async () => {
     axios('http://10.54.36.55:9007/dashboard-g20/api/paragames/roamer',{
@@ -466,12 +437,6 @@ const Wsbk = () => {
     .then(res => {
       if(!res.data.error){
         setDataTopUserContry(res.data.resultData);
-        // let totaluser = 0;
-        // for(var i = 0; i < res.data.resultData.length; i++){
-        //   totaluser += res.data.resultData[i].TOTAL_USER
-        // }
-        // setDataAllUserRoamers(totaluser);
-        // setDataRoamersPercentage(res.data.roamers_growth);
       }
     })
     .catch(function(error){
@@ -490,13 +455,26 @@ const Wsbk = () => {
     })
     .then(res => {
       if(!res.data.error){
-        setDataRoamersChart(res.data.data);
+        setDataVLRDomesticsChart(res.data.data);
         setSubsVLR(res.data.data[res.data.data.length-1]["vlr_domestic"])
+        setIsLoadingChartRoamer(false)
+      }
+    })
+    .catch(function(error){
+        console.log(error)
+    })
 
-        // setGrowthRoamers(res.data.growth[0].DELTA)
-        // setGrowthVLR(res.data.growth[0].GROWTH)
-        // setDataAllUserRoamers(res.data.data.slice(-1).pop().VLR);
-        // setDataAllUserRoamers(res.data.data.slice(-1).pop().TOTAL_USER + res.data.data.slice(-1).pop().VLR);
+    axios(`${getBaseURL()}/api/roamer/chart`,{
+      method: 'GET',
+      headers: {
+        'key': `bf931496409d570ca09cc0d30446b325`,
+        "Access-Control-Allow-Origin": "*",
+        'Content-Type': 'application/json'
+      }
+    })
+    .then(res => {
+      if(!res.data.error){
+        setDataRoamersChart(res.data.data);
       }
     })
     .catch(function(error){
@@ -504,6 +482,48 @@ const Wsbk = () => {
     })
   }
   // END ROAMER 
+
+  // CORE METRICS
+  const getDataCoreMetrics = async () => {
+    axios(`${getBaseURL()}/api/core`,{
+      method: 'GET',
+      headers: {
+          'key': `bf931496409d570ca09cc0d30446b325`,
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json'
+      }
+    })
+    .then(res => {
+      if(!res.data.error){
+        setCoreMetrics(res.data.resultData);
+      }
+    })
+    .catch(function(error){
+        console.log(error)
+    })
+  }
+  // END CORE METRICS 
+
+  // TOP APPS
+  const getDataTopApps = async () => {
+    axios(`${getBaseURL()}/api/top_apps`,{
+      method: 'GET',
+      headers: {
+          'key': `bf931496409d570ca09cc0d30446b325`,
+          "Access-Control-Allow-Origin": "*",
+          'Content-Type': 'application/json'
+      }
+    })
+    .then(res => {
+      if(!res.data.error){
+        setApps(res.data.data);
+      }
+    })
+    .catch(function(error){
+        console.log(error)
+    })
+  }
+  // END TOP APPS 
 
   // OPERATORS
   const getDataTopOperator = async () => {
@@ -812,7 +832,9 @@ const Wsbk = () => {
     // getDataTopApps();
 
     // getDataTopUserContry();
+    getDataTopApps();
     getDataTopRoamersChart();
+    getDataCoreMetrics();
     getDataTopOperator();
     getDataAlarm();
 
@@ -828,9 +850,9 @@ const Wsbk = () => {
     // getDataDetailTopApps();
     // getDataDetailRoamers();
 
-    // getDate();
-    // getHour();
-    // getHourNow();
+    getDate();
+    getHour();
+    getHourNow();
     
     setInterval(()=>{
       getDataMap();
@@ -851,11 +873,12 @@ const Wsbk = () => {
       // getProductivityWorstPayloadSite();
       // getProductivityChartTraffic();
       // getProductivityChartPayload();
-
       // // getDataTopApps();
-
       // getDataTopUserContry();
+      
+      getDataTopApps();
       getDataTopRoamersChart();
+      getDataCoreMetrics();
       getDataTopOperator();
 
       // getTokenSmartcare();
@@ -974,18 +997,18 @@ const Wsbk = () => {
                             <CardProductivityPercentage name="PAYLOAD" data={dataPayloadPresentage} />
                           </div>
                           <div style={{width: '100%', height: '205px'}}>
-                            <ChartProductivity data={dataPayloadChart} dataKey="PAYLOAD" />
+                            <ChartProductivity data={dataPayloadChart} dataKey="PAYLOAD" isLoading={isLoadingChartProductivity} />
                           </div>
                           <div style={{padding: '1px 5px'}}>
                             <div style={{borderBottom: '1.3px solid #aaa'}}></div>
                           </div>
                           {/*<div style={{display: 'flex', justifyContent: 'space-between', margin: '6px 6px 0px 6px'}}>*/}
-                            <div style={{color: '#f9fbfe', position: 'relative'}}>
-                              <CardProductivityPercentage name="TRAFFIC" data={dataTrafficPresentage} />
-                            </div>
-                            <div style={{width: '100%', height: '205px'}}>
-                              <ChartProductivity data={dataTrafficChart} dataKey="TRAFFIC" />
-                            </div>
+                          <div style={{color: '#f9fbfe', position: 'relative'}}>
+                            <CardProductivityPercentage name="TRAFFIC" data={dataTrafficPresentage} />
+                          </div>
+                          <div style={{width: '100%', height: '205px'}}>
+                            <ChartProductivity data={dataTrafficChart} dataKey="TRAFFIC" isLoading={isLoadingChartProductivity} />
+                          </div>
                           {/*</div>*/}
                           <div style={{textAlign: 'right', fontSize: '9px', color: '#bac3d0', margin: '4px 6px', paddingBottom: '6px', fontStyle: 'italic'}}>Baseline 03 - 09 February 2023</div>
                         </div>
@@ -1031,7 +1054,7 @@ const Wsbk = () => {
                     <ul>
                       {apps.map((app, idx) => (
                         <li key={idx}>
-                          {app.name}: {app.users} User ({app.data})
+                          {app.apps} : {app.usercount} User ({app.trafficmb} GB)
                         </li>
                       ))}
                     </ul>
@@ -1046,7 +1069,7 @@ const Wsbk = () => {
                     <ul>
                       {coreMetrics.map((metric, idx) => (
                         <li key={idx}>
-                          {metric.name}: {metric.value}
+                          {metric.KPI}: {metric.VALUE}
                         </li>
                       ))}
                     </ul>
@@ -1065,8 +1088,13 @@ const Wsbk = () => {
                         <span style={{fontSize: '11px', fontWeight: '700', marginTop: "-20px", position: "relative", display: 'flex', alignItems:"center"}}>#All Total Subscriber {subsVLR} Subs</span>
                       </div>
                       <div style={{display: "flex", gap: "10px"}}>
-                        <div style={{height: '157px', flex: 1}}>
-                          <ChartRoamers data={dataRoamersChart}/>
+                        <div style={{display: "flex", flexDirection: "column", gap: "10px", flex: 1}}>
+                          <div style={{height: '150px', flex: 1}}>
+                            <ChartVlrDomestic data={dataVLRDomesticsChart} isLoading={isLoadingChartRoamer}/>
+                          </div>
+                          <div style={{height: '150px', flex: 1}}>
+                            <ChartRoamers data={dataRoamersChart} isLoading={isLoadingChartRoamer}/>
+                          </div>
                         </div>
 
                         <div style={{flex: 1, color:"white",  fontSize:"12px"}}>
@@ -1083,7 +1111,6 @@ const Wsbk = () => {
                           </table>
                         </div>
                       </div>
-
                       <div style={{textAlign: 'right', fontSize: '9px', color: '#bac3d0', fontStyle: 'italic', marginTop: '-20px', position: "absolute", display:"block", right:"15px"}}>Baseline 03 - 09 February 2023</div>
                       {/* <div style={{textAlign: 'right', fontSize: '12px', color: '#bac3d0', fontStyle: 'italic', marginTop: '-20px', position: "absolute", display:"block", right:"15px"}}>Cluster Solo Raya</div> */}
                     </div>

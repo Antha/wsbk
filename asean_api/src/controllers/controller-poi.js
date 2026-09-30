@@ -1,6 +1,8 @@
 const config = require('../configs/db-event-43');
+const config_90 = require('../configs/db-event-90');
 const mysql = require('mysql');
 const pool = mysql.createPool(config);
+const pool_90 = mysql.createPool(config_90);
 
 pool.on('error',(err)=> {
     console.error(err);
@@ -252,6 +254,65 @@ module.exports ={
                     statusCode: 200, 
                     statusMessage: 'Success',
                     data: results 
+                });
+            });
+            connection.release();
+        })
+    },
+    getCore(req,res){
+        // console.log(req.header('user-agent'))
+        pool_90.getConnection(function(err, connection) {
+            if (err) throw err;
+            connection.query(
+                `
+                SELECT
+                '2G Attach SR' AS KPI,
+                MAX(DATE_TIME) AS Latest_Time,
+                ROUND(AVG(Gb_mode_attach_SR_v3),2) AS VALUE
+                FROM amf_combine_attach_kpi_2g
+
+                UNION ALL
+
+                -- 2G PDP SR
+                SELECT
+                '2G PDP SR' AS KPI,
+                MAX(DATE_TIME) AS Latest_Time,
+                ROUND(AVG(Gb_mode_PDP_ctx_activation_SR_v3),2) AS VALUE
+                FROM amf_combine_attach_kpi_2g
+
+                UNION ALL
+
+                -- 4G Combine Attach SR
+                SELECT
+                '4G Combine Attach SR' AS KPI,
+                MAX(DATE_TIME) AS Latest_Time,
+                ROUND(AVG(Combined_Attach_SR_V1),2) AS VALUE
+                FROM amf_combine_attach_kpi
+
+                UNION ALL
+
+                -- 4G Default Bearer SR
+                SELECT
+                '4G Default Bearer SR' AS KPI,
+                MAX(DATE_TIME) AS Latest_Time,
+                ROUND(AVG(Default_Bearer_SR),2) AS VALUE
+                FROM amf_combine_attach_kpi
+
+                UNION ALL
+
+                #NAME?
+                SELECT
+                'CCR' AS KPI,
+                MAX(DATETIME) AS Latest_Time,
+                ROUND(AVG(ccr),2) AS VALUE
+                FROM core_mss_ccr_rc10;
+                `
+            , function (error, results) {
+                if(error) throw error;  
+                res.send({ 
+                    statusCode: 200, 
+                    statusMessage: 'Success',
+                    resultData: results 
                 });
             });
             connection.release();

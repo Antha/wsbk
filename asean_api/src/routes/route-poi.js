@@ -1,5 +1,5 @@
 const router = require('express').Router();
-const { poi,payloadtraffic, vlr,engineer,summary, poibod } = require('../controllers');
+const { poi, payloadtraffic, vlr, engineer, summary, poibod } = require('../controllers');
 
 // GET localhost:8080/karyawan => Ambil data semua karyawan
 const root = '/motogp-2026/api';
@@ -63,6 +63,9 @@ router.get(root+'/productivity/payload', payloadtraffic.getPayloadCategory);
 // get data vlr
 router.get(root+'/vlr/chart', vlr.getVLRChart);
 
+//get data roamer
+router.get(root+'/roamer/chart', vlr.getRoamerChart);
+
 // get top operator
 router.get(root+'/vlr/top_operator', vlr.getTopOperator);
 
@@ -71,5 +74,11 @@ router.get(root+'/engineer', engineer.getEngineer);
 
 // get data summary
 router.get(root+'/report/summary', summary.getSummary);
+
+//get data core
+router.get(root+'/core', poi.getCore);
+
+//get data top apps
+router.get(root+'/top_apps', vlr.getTopApps);
 
 module.exports = router;

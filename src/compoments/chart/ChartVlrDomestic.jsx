@@ -1,9 +1,9 @@
 import React, {useState} from 'react';
 import { AreaChart, Legend, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
   
-const ChartRoamers = ({data, isLoading}) => {
+const ChartVlrDomestic = ({data, isLoading}) => {
   const inputLabels = [
-    {databar: "vlr_roamer", key: "vlr_roamer", color: "#c56b10ff", colorid: "url(#color3)", yAxisId:"left"},
+    {databar: "vlr_domestic", key: "vlr_domestic", color: "#02B075", colorid: "url(#color2)", yAxisId:"left"},
     // {databar: "ROAMERS", key: "ROAMERS", color: "#F94C48", colorid: "url(#color1)", yAxisId:"right"},
   ]
 
@@ -49,41 +49,35 @@ const ChartRoamers = ({data, isLoading}) => {
         width={1000}
         height={150}
         data={data}
-        margin={{ top: 10, right: 0, left: 0, bottom: 0 }}
+        margin={{
+          top: 10,
+          right: 0,
+          left: 0,
+          bottom: 0
+        }}
       >
         <CartesianGrid strokeDasharray="3 3" stroke="#888" />
-        <XAxis interval={50} dataKey="datehour" style={{fontSize: '9px'}} tick={{ fill: '#f7ffff' }} />
+        <XAxis interval={50} dataKey="resulttime" style={{fontSize: '9px'}} tick={{ fill: '#f7ffff' }} />
         <YAxis yAxisId="left" orientation="left" style={{fontSize: '10px'}} tick={{ fill: '#f7ffff'}}/>
         <YAxis yAxisId="right" domain={[null, 80000]} orientation="right" style={{fontSize: '10px'}} tick={{ fill: '#f7ffff'}}/>
         <Tooltip formatter={(number)=>dataFormater(number)} />
         <defs>
-          <linearGradient id="color3" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="5%" stopColor="#c56b10" stopOpacity={0.9}/>
-            <stop offset="95%" stopColor="#c56b10" stopOpacity={0}/>
-          </linearGradient>
+        <linearGradient id="color1" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="5%" stopColor="#F94C48" stopOpacity={0.9}/>
+          <stop offset="95%" stopColor="#F94C48" stopOpacity={0}/>
+        </linearGradient>
+        <linearGradient id="color2" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="5%" stopColor="#02B075" stopOpacity={0.9}/>
+          <stop offset="95%" stopColor="#02B075" stopOpacity={0}/>
+        </linearGradient>
         </defs>
-        <Legend
-          wrapperStyle={{left: 5}}
-          layout="horizontal"
-          align="left"
-          verticalAlign="bottom"
-          height={30}
+        <Legend wrapperStyle={{left: 5}} layout="horizontal" align="left" verticalAlign="bottom" height={30}
           onClick={selectBar}
           onMouseOver={handleLegendMouseEnter}
           onMouseOut={handleLegendMouseLeave}
         />
         {inputLabels.map((label, index) => (
-          <Area
-            yAxisId={label.yAxisId}
-            hide={barProps[label.databar] === true}
-            key={index}
-            name={label.key}
-            type="monotone"
-            dataKey={label.databar}
-            stroke={label.color}
-            fill={label.colorid}   // ini yang menentukan warna area
-            fillOpacity={Number(barProps.hover === label.databar || !barProps.hover ? 1 : 0.25)}
-          />
+        <Area yAxisId={label.yAxisId} hide={barProps[label.databar] === true} key={index} name={label.key} type="monotone" dataKey={label.databar} stroke={label.color} fill={label.colorid} fillOpacity={Number(barProps.hover === label.databar || !barProps.hover ? 1 : 0.25)} />
         ))}
       </AreaChart>
     </ResponsiveContainer>
@@ -103,5 +97,5 @@ const dataFormater = (number) => {
   }
 }
   
-export default ChartRoamers;
+export default ChartVlrDomestic;
   

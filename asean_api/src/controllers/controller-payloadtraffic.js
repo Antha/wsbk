@@ -7,53 +7,64 @@ pool.on('error',(err)=> {
 });
 
 module.exports ={
-    // Ambil data semua karyawan
     getPayloadTraffic(req,res){
         pool.getConnection(function(err, connection, getGrowthHourly) {
             if (err) throw err;
             connection.query(
                 `
-                (SELECT REPLACE(CONCAT(resulttime,'.000Z'),' ','T')STARTTIME, SUM(traffic_erlang) TRAFFIC, SUM(payload_MByte) PAYLOAD FROM productivity 
-                WHERE resulttime >= (SELECT DATE_SUB(MAX(resulttime) ,INTERVAL 5 DAY) FROM productivity p)
-                GROUP BY resulttime)
-                union
-                                (SELECT date(resulttime), SUM(traffic_erlang) TRAFFIC, SUM(payload_MByte) PAYLOAD FROM productivity
-                WHERE resulttime >= (SELECT DATE_SUB(MAX(resulttime) ,INTERVAL 5 DAY) FROM productivity)
-                GROUP BY date(resulttime))
+                SELECT
+                    DATE_FORMAT(t.resulttime, '%Y-%m-%d %H:00:00') AS STARTTIME,
+                    SUM(t.traffic_erlang) AS TRAFFIC,
+                    SUM(t.downlink_traffic_volume_ok) AS PAYLOAD
+                FROM ch_balnus.\`4g_kpi_hourly_202639\` t
+                where 1  AND siteid IN (SELECT site_id FROM \`event_motogp_2026\`.sitelist)
+                GROUP BY STARTTIME
+                ORDER BY STARTTIME ASC;
                 `
             , function (error, results) {
                 // console.log(results)
                 if(error) throw error;  
-                
-                    let query = ` (SELECT A.TRAFFIC TRAF_BASELINE, A.PAYLOAD PAY_BASELINE, SUM(B.TRAFFIC) TRAF_NOW, 
-                    SUM(B.PAYLOAD) PAY_NOW, 100*(SUM(B.TRAFFIC)/SUM(A.TRAFFIC)-1) GROWTH_TRAFFIC, 
-                    100*(SUM(B.PAYLOAD)/SUM(A.PAYLOAD)-1) GROWTH_PAYLOAD, MAX(B.STARTTIME) STARTTIME FROM
-                    
-                    (SELECT WEEKDAY(resulttime) WD, HOUR(resulttime) JAM,resulttime STARTTIME,
-                    SUM(traffic_erlang) TRAFFIC, SUM(payload_MByte) PAYLOAD FROM productivity
-                    WHERE DATE(resulttime) >= '2026-08-24' AND DATE(resulttime) <= '2026-08-30'
-                    GROUP BY WD, JAM) A
-                    JOIN (
-                    SELECT WEEKDAY(resulttime) WD, HOUR(resulttime) JAM, resulttime STARTTIME, SUM(traffic_erlang) TRAFFIC, SUM(payload_MByte) PAYLOAD FROM productivity
-                    WHERE DATE(resulttime) = (SELECT DATE(MAX(resulttime)) FROM productivity) GROUP BY JAM) B
-                    ON A.WD = B.WD
-                    AND A.JAM = B.JAM)
-                    #GROUP BY A.CATEGORY
-                    UNION
-                    -- daily
-                    
-                    (SELECT  A.TRAFFIC TRAF_BASELINE, A.PAYLOAD PAY_BASELINE, SUM(B.TRAFFIC) TRAF_NOW, 
-                    SUM(B.PAYLOAD) PAY_NOW, 100*(SUM(B.TRAFFIC)/SUM(A.TRAFFIC)-1) GROWTH_TRAFFIC, 
-                    100*(SUM(B.PAYLOAD)/SUM(A.PAYLOAD)-1) GROWTH_PAYLOAD, MAX(B.STARTTIME) STARTTIME FROM
-                    
-                    (SELECT WEEKDAY(resulttime) WD,resulttime STARTTIME, 
-                    SUM(traffic_erlang) TRAFFIC, SUM(payload_MByte) PAYLOAD FROM productivity
-                    WHERE DATE(resulttime) >= '2026-08-24' AND DATE(resulttime) <= '2026-08-30'
-                    GROUP BY WD) A
-                    JOIN (
-                    SELECT WEEKDAY(resulttime) WD,resulttime STARTTIME, SUM(traffic_erlang) TRAFFIC, SUM(payload_MByte) PAYLOAD FROM productivity
-                    WHERE DATE(resulttime) = (SELECT DATE(DATE_SUB(MAX(resulttime), INTERVAL 1 DAY)) FROM productivity)) B
-                    ON A.WD = B.WD)`;
+                    let query = ` 		   (
+                        SELECT A.TRAFFIC TRAF_BASELINE, A.PAYLOAD PAY_BASELINE, SUM(B.TRAFFIC) TRAF_NOW, 
+                        SUM(B.PAYLOAD) PAY_NOW, 100*(SUM(B.TRAFFIC)/SUM(A.TRAFFIC)-1) GROWTH_TRAFFIC, 
+                        100*(SUM(B.PAYLOAD)/SUM(A.PAYLOAD)-1) GROWTH_PAYLOAD, MAX(B.STARTTIME) STARTTIME FROM
+                        (
+                            SELECT WEEKDAY(resulttime) WD, HOUR(resulttime) JAM,resulttime STARTTIME,
+                            SUM(traffic_erlang) TRAFFIC, SUM(downlink_traffic_volume_ok) PAYLOAD FROM ch_balnus.\`4g_kpi_hourly_202634\`
+                            WHERE DATE(resulttime) >= '2026-08-24' AND DATE(resulttime) <= '2026-08-30'
+                            AND siteid IN (SELECT site_id FROM \`event_motogp_2026\`.sitelist)
+                            GROUP BY WD, JAM
+                        ) A
+                        JOIN (
+                            SELECT WEEKDAY(resulttime) WD, HOUR(resulttime) JAM, resulttime STARTTIME, SUM(traffic_erlang) TRAFFIC, SUM(downlink_traffic_volume_ok) PAYLOAD FROM ch_balnus.\`4g_kpi_hourly_202639\`
+                            WHERE DATE(resulttime) = (SELECT DATE(MAX(resulttime)) FROM ch_balnus.\`4g_kpi_hourly_202639\`)
+                            AND siteid IN (SELECT site_id FROM \`event_motogp_2026\`.sitelist)			    
+                            GROUP BY JAM
+                       ) B
+                        ON A.WD = B.WD
+                        AND A.JAM = B.JAM
+                        )
+                        #GROUP BY A.CATEGORY
+                        UNION
+                        -- daily
+                        (
+                        SELECT  A.TRAFFIC TRAF_BASELINE, A.PAYLOAD PAY_BASELINE, SUM(B.TRAFFIC) TRAF_NOW, 
+                        SUM(B.PAYLOAD) PAY_NOW, 100*(SUM(B.TRAFFIC)/SUM(A.TRAFFIC)-1) GROWTH_TRAFFIC, 
+                        100*(SUM(B.PAYLOAD)/SUM(A.PAYLOAD)-1) GROWTH_PAYLOAD, MAX(B.STARTTIME) STARTTIME FROM
+                        (
+                            SELECT WEEKDAY(resulttime) WD,resulttime STARTTIME, 
+                            SUM(traffic_erlang) TRAFFIC, SUM(downlink_traffic_volume_ok) PAYLOAD FROM  ch_balnus.\`4g_kpi_hourly_202634\`
+                            WHERE DATE(resulttime) >= '2026-08-24' AND DATE(resulttime) <= '2026-08-30' 
+                            AND siteid IN (SELECT site_id FROM \`event_motogp_2026\`.sitelist)
+                            GROUP BY WD
+                        ) A
+                        JOIN (
+                            SELECT WEEKDAY(resulttime) WD,resulttime STARTTIME, SUM(traffic_erlang) TRAFFIC, SUM(downlink_traffic_volume_ok) PAYLOAD FROM ch_balnus.\`4g_kpi_hourly_202639\`
+                            WHERE DATE(resulttime) = (SELECT DATE(DATE_SUB(MAX(resulttime), INTERVAL 1 DAY)) FROM ch_balnus.\`4g_kpi_hourly_202639\`)
+                            AND siteid IN (SELECT site_id FROM \`event_motogp_2026\`.sitelist)
+                        ) B
+                        ON A.WD = B.WD
+                    )`;
 
                     connection.query(
                     query
@@ -66,19 +77,19 @@ module.exports ={
                         "GROWTH_TRAFFIC": resultsBaseline[0].GROWTH_TRAFFIC,
                         "GROWTH_PAYLOAD": resultsBaseline[0].GROWTH_PAYLOAD
                     }];
+
                     var dataDaily = [{
-    
                         "SUM(B.TRAFFIC)": resultsBaseline[1].TRAF_NOW,
                         "SUM(B.PAYLOAD)": resultsBaseline[1].PAY_NOW,
                         "GROWTH_TRAFFIC": resultsBaseline[1].GROWTH_TRAFFIC,
                         "GROWTH_PAYLOAD": resultsBaseline[1].GROWTH_PAYLOAD
-                    
                     }];
-                    var hourlyResult = results.slice(0,results.length - 6);
+
+                    var hourlyResult = results.slice(0,results.length);
                     var dailyResult = results.slice(results.length - 5);
                     
                     dailyResult= dailyResult.map(({ STARTTIME,TRAFFIC,PAYLOAD}) => ({ RESULTTIME: STARTTIME,TRAFFIC: TRAFFIC,PAYLOAD: PAYLOAD}));
-                    var all =[hourlyResult,dataHourly,dailyResult,dataDaily];
+                    var all =[hourlyResult, dataHourly, dailyResult, dataDaily];
                     res.send({ 
                         statusCode: 200, 
                         statusMessage: 'Success',

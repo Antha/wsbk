@@ -1,7 +1,15 @@
 import React from "react";
 import { AreaChart, Area, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
   
-const ChartProductivity = ({data, dataKey}) => {
+const ChartProductivity = ({data, dataKey, isLoading}) => {
+  if (isLoading) {
+    return (
+      <div style={{ height: '200px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <p style={{ color: '#fff' }}>Loading chart...</p>
+      </div>
+    );
+  }
+  
   return (
     <ResponsiveContainer width="100%" height="100%">
       <AreaChart
@@ -42,7 +50,7 @@ const dataFormater = (number, dataKey) => {
   
   if (dataKey === 'PAYLOAD') {
     if(number > 1000000000){
-      return numberfx;
+      return numberfx + "PB";
     }else if(number > 1000000){
       return ((numberfx/1024/1024).toFixed(2)).toString() + 'TB';
     }else if(number > 1000){
